@@ -1,6 +1,8 @@
 {
   "name": "management",
   "version": "0.1.0",
+  "description": "xx管理系统",
+  "author": "longyinstudio",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,6 +11,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "element-ui": "^2.15.13",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
