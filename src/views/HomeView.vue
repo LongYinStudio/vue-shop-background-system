@@ -13,7 +13,9 @@
 export default {
   name: "HomeView",
   data() {
-    return {};
+    return {
+      value: true,
+    };
   },
   components: {},
 };
