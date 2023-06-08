@@ -1,5 +1,5 @@
 <template>
-  <div>Home</div>
+  <div>total orders</div>
 </template>
 
 <script>
