@@ -29,6 +29,9 @@ export default {
       deep: true,
     },
   },
+  mounted() {
+    this.title = this.$route.meta.title.split("/");
+  },
 };
 </script>
 <style lang="scss" scoped>

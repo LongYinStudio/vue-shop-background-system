@@ -33,7 +33,7 @@ export default {
 <style lang="scss" scoped>
 .main {
   .chart {
-    width: 1000px;
+    width: 100%;
     height: 600px;
   }
 }

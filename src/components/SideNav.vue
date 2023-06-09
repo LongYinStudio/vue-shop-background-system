@@ -2,7 +2,7 @@
   <div class="container">
     <h3>卖家中心</h3>
     <el-menu
-      default-active="/home"
+      :default-active="$route.path"
       class="el-menu-vertical-demo"
       router
       background-color="#304156"
