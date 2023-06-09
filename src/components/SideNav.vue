@@ -4,9 +4,10 @@
     <el-menu
       default-active="1-4-1"
       class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
       router
+      background-color="#304156"
+      text-color="#fff"
+      active-text-color="#3872b0"
     >
       <el-menu-item index="/home">
         <i class="el-icon-s-home"></i>
@@ -56,30 +57,27 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 .container {
-  width: 100% !important;
+  height: 100%;
   background: #304156;
+  overflow-y: hidden;
+
   h3 {
     color: #fff;
     text-align: center;
-    padding: 1rem;
+    padding: 19.2px 0;
   }
-}
-
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    height: 100%;
+    width: 100%;
+    min-height: 400px;
+  }
+  i {
+    color: #fff;
+  }
 }
 </style>

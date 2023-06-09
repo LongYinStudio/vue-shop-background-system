@@ -1,9 +1,40 @@
 <template>
-  <div>total goods</div>
+  <div class="main">
+    <h1>total goods</h1>
+    <div ref="chartBox" class="chart"></div>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "TotalGoods",
+  mounted() {
+    this.$echarts.init(this.$refs.chartBox).setOption({
+      title: {
+        text: "ECharts 入门示例",
+      },
+      tooltip: {},
+      xAxis: {
+        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+      },
+      yAxis: {},
+      series: [
+        {
+          name: "销量",
+          type: "bar",
+          data: [5, 20, 36, 10, 10, 20],
+        },
+      ],
+    });
+  },
+};
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.main {
+  .chart {
+    width: 1000px;
+    height: 600px;
+  }
+}
+</style>

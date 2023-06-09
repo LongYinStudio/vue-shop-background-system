@@ -1,11 +1,11 @@
 <template>
   <el-container class="index-con">
-    <el-aside :class="showclass">
+    <el-aside class="nav">
       <SideNav></SideNav>
     </el-aside>
     <el-container class="main-con">
       <el-header class="index-header">
-        <NavCon></NavCon>
+        <MyHeader></MyHeader>
       </el-header>
       <el-main clss="index-main">
         <router-view></router-view>
@@ -15,28 +15,33 @@
 </template>
 
 <script>
-import NavCon from "@/components/nav-con.vue";
+import MyHeader from "@/components/MyHeader.vue";
 import SideNav from "@/components/SideNav.vue";
 
 export default {
-  name: "HomeView",
+  name: "IndexView",
   data() {
-    return {
-      showclass: "asideshow",
-      showtype: false,
-    };
+    return {};
   },
   components: {
-    NavCon,
+    MyHeader,
     SideNav,
+  },
+  mounted() {
+    console.log(this.$router);
   },
 };
 </script>
 
 <style lang="scss">
 .index-con {
+  height: 100%;
+  .nav {
+    width: 200px !important;
+  }
   .main-con {
     .index-header {
+      padding: 0;
     }
     .index-main {
       width: 100%;
