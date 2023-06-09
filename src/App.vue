@@ -23,6 +23,7 @@ body {
   text-align: center;
   color: #2c3e50;
   height: 100%;
+  background: #f0f2f5;
 }
 
 nav {

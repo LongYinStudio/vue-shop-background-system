@@ -3,7 +3,6 @@
   <div class="main">
     <div class="left">
       <span v-for="(item, index) in title" :key="index">
-        <!-- <img v-if="index > 0" src="@/assets/img/right.png" alt="" /> -->
         <i
           v-if="index > 0"
           class="el-breadcrumb__separator el-icon-arrow-right"
@@ -43,7 +42,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* background: #008c8c; */
+  background: #fff;
   padding: 10px;
   border-bottom: 1px solid #eee;
   .left {
