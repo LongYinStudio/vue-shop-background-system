@@ -45,7 +45,7 @@
         >
         </el-pagination>
         <div btn>
-          <el-button del @click="toggleSelection()">批量删除</el-button>
+          <el-button del @click="multipleDel()">批量删除</el-button>
           <el-button cancel @click="toggleSelection()">取消选择</el-button>
         </div>
       </div>
@@ -71,32 +71,12 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pass">
-          <el-input
-            type="password"
-            v-model="ruleForm.pass"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input
-            type="password"
-            v-model="ruleForm.checkPass"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
         <el-form-item label="用户组">
           <el-select v-model="ruleForm.group" placeholder="请选择用户组">
             <el-option label="普通管理员" value="normal"></el-option>
             <el-option label="超级管理员" value="super"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >提交</el-button
-          >
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -117,25 +97,7 @@ export default {
         return callback(new Error("不能为空"));
       }
     };
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.ruleForm.checkPass !== "") {
-          this.$refs.ruleForm.validateField("checkPass");
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
+
     return {
       users: [
         {
@@ -228,17 +190,16 @@ export default {
       multipleSelection: [],
       dialogVisible: false,
       ruleForm: {
-        pass: "",
-        checkPass: "",
+        user: "",
+        group: "",
         primaryPassword: "",
       },
       rules: {
-        pass: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
         primaryPassword: [{ validator: checkPrimaryPassword, trigger: "blur" }],
       },
       currentPage: 1,
       pageSize: 5,
+      changingIndex: -1, // 修改用户信息的index
     };
   },
   methods: {
@@ -264,32 +225,27 @@ export default {
           console.log(err);
         });
     },
-    handleEdit() {
+    handleEdit(index, row) {
       this.dialogVisible = true;
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+      let i = index + this.pageSize * (this.currentPage - 1);
+      this.changingIndex = i;
+      this.ruleForm.group = row.group;
+      this.ruleForm.user = row.user;
     },
     handleSubmit() {
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //     alert("submit!");
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
+      if (this.ruleForm.group === "normal") {
+        this.users[this.changingIndex].group = "普通管理员";
+      }
+      if (this.ruleForm.group === "super") {
+        this.users[this.changingIndex].group = "超级管理员";
+      }
+      this.users[this.changingIndex].user = this.ruleForm.user;
       this.dialogVisible = false;
+    },
+    handleDelete(index) {
+      let i = index + this.pageSize * (this.currentPage - 1);
+      this.users.splice(i, 1);
+      this.tableData = this.users.slice(0, this.pageSize);
     },
     handleSizeChange(val) {
       this.pageSize = val;
@@ -301,6 +257,12 @@ export default {
         this.pageSize * (val - 1),
         this.pageSize * val
       );
+    },
+    multipleDel() {
+      this.multipleSelection.forEach((item) => {
+        this.users.splice(this.users.indexOf(item), 1);
+        this.tableData = this.users.slice(0, this.pageSize);
+      });
     },
   },
   mounted() {
