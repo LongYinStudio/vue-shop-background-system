@@ -12,7 +12,7 @@
     </div>
     <div class="right">
       <span>欢迎你 {{ $store.state.user.name }}</span>
-      <el-avatar :src="require('@/assets/logo.png')"></el-avatar>
+      <el-avatar :src="require('@/assets/img/head.jpg')"></el-avatar>
     </div>
   </div>
 </template>
