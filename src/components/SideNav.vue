@@ -2,7 +2,7 @@
   <div class="container">
     <h3>卖家中心</h3>
     <el-menu
-      default-active="1-4-1"
+      default-active="/home"
       class="el-menu-vertical-demo"
       router
       background-color="#304156"

@@ -27,9 +27,6 @@ export default {
     MyHeader,
     SideNav,
   },
-  mounted() {
-    console.log(this.$router);
-  },
 };
 </script>
 
@@ -44,6 +41,7 @@ export default {
       padding: 0;
     }
     .index-main {
+      background: red !important;
       width: 100%;
       height: 100%;
     }
