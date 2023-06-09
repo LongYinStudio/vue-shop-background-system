@@ -3,7 +3,11 @@
   <div class="main">
     <div class="left">
       <span v-for="(item, index) in title" :key="index">
-        <img v-if="index > 0" src="@/assets/img/right.png" alt="" />
+        <!-- <img v-if="index > 0" src="@/assets/img/right.png" alt="" /> -->
+        <i
+          v-if="index > 0"
+          class="el-breadcrumb__separator el-icon-arrow-right"
+        />
         <span>{{ item }}</span>
       </span>
     </div>
