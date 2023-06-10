@@ -1,5 +1,17 @@
 <template>
-  <div>
+  <div class="main">
+    <div class="timer">
+      <div class="title">时间范围</div>
+      <el-date-picker
+        v-model="value1"
+        type="daterange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+      >
+      </el-date-picker>
+      <el-button type="primary">查询</el-button>
+    </div>
     <el-card class="box-card">
       <div id="echarts" ref="echarts"></div>
     </el-card>
@@ -120,9 +132,24 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 #echarts {
   width: 100%;
-  height: 500px;
+  height: 600px;
+}
+
+.main {
+  .timer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 10px;
+    .el-date-editor {
+      margin: 0px 10px;
+      .el-range-separator {
+        width: 6% !important;
+      }
+    }
+  }
 }
 </style>
