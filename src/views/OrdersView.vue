@@ -72,12 +72,11 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-size="6"
+        :current-page="currentPage"
+        :page-size="pageSize"
         layout="total, prev, pager, next, jumper"
-        :total="400"
+        :total="orders.length"
       >
       </el-pagination>
     </el-card>
@@ -95,9 +94,9 @@ export default {
         state: "",
       },
       value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
-      tableData: [
+      orders: [
         {
-          orderId: "15161718",
+          orderId: "151617183232",
           time: "19:00:00",
           phone: "13666888777",
           consignee: "赵四",
@@ -394,6 +393,9 @@ export default {
           state: "已受理",
         },
       ],
+      pageSize: 6,
+      currentPage: 1,
+      tableData: [],
     };
   },
   methods: {
@@ -403,6 +405,16 @@ export default {
     handleClick(row) {
       console.log(row);
     },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.tableData = this.orders.slice(
+        this.pageSize * (val - 1),
+        this.pageSize * val
+      );
+    },
+  },
+  mounted() {
+    this.tableData = this.orders.slice(0, this.pageSize);
   },
 };
 </script>
