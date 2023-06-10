@@ -21,6 +21,11 @@
 <script>
 export default {
   name: "TotalGoods",
+  data() {
+    return {
+      value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+    };
+  },
   mounted() {
     this.echartsInit();
   },

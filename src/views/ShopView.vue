@@ -99,7 +99,7 @@
         <el-form-item label="营业时间" prop="scaleTime">
           <el-time-picker
             is-range
-            v-model="scaleTime"
+            v-model="form.scaleTime"
             range-separator="至"
             start-placeholder="开始时间"
             end-placeholder="结束时间"

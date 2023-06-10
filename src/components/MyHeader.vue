@@ -2,9 +2,13 @@
 <template>
   <div class="main">
     <el-breadcrumb class="left" separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item v-for="(item, index) in title" :key="index">{{
-        item
-      }}</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item
+        v-for="(item, index) in title"
+        :to="{ path: $route.path }"
+        :key="index"
+        >{{ item }}</el-breadcrumb-item
+      >
     </el-breadcrumb>
     <div class="right">
       <span
@@ -36,6 +40,8 @@ export default {
   watch: {
     $route: {
       handler(to) {
+        console.log("路由");
+        console.log(to);
         this.title = to.meta.title.split("/");
       },
       deep: true,

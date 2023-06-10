@@ -2,19 +2,84 @@
   <div class="main">
     <el-card>
       <el-form :inline="true" :model="ordersForm" class="demo-form-inline">
-        <el-form-item label="审批人">
-          <el-input v-model="ordersForm.user" placeholder="审批人"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域">
-          <el-select v-model="ordersForm.region" placeholder="活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
-        </el-form-item>
+        <el-row
+          ><el-form-item label="订单号">
+            <el-input
+              v-model="ordersForm.orderId"
+              placeholder="订单号"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="收货人">
+            <el-input
+              v-model="ordersForm.consignee"
+              placeholder="收货人"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="手机号">
+            <el-input
+              v-model="ordersForm.phoneNum"
+              placeholder="手机号"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="订单状态">
+            <el-select v-model="ordersForm.state" placeholder="订单状态">
+              <el-option label="出货中" value="outing"></el-option>
+              <el-option label="派送中" value="sending"></el-option>
+            </el-select> </el-form-item
+        ></el-row>
+        <el-row>
+          <div class="timer">
+            <div class="title">时间范围</div>
+            <el-date-picker
+              v-model="value1"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            >
+            </el-date-picker>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+          </div>
+        </el-row>
       </el-form>
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column fixed prop="orderId" label="订单号" width="150">
+        </el-table-column>
+        <el-table-column prop="time" label="下单时间" width="120">
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号" width="120">
+        </el-table-column>
+        <el-table-column prop="consignee" label="收货人" width="120">
+        </el-table-column>
+        <el-table-column prop="address" label="地址" width="300">
+        </el-table-column>
+        <el-table-column prop="sendTime" label="送达时间" width="120">
+        </el-table-column>
+        <el-table-column prop="tips" label="用户备注" width="120">
+        </el-table-column>
+        <el-table-column prop="money" label="订单金额" width="120">
+        </el-table-column>
+        <el-table-column prop="state" label="订单状态" width="120">
+        </el-table-column>
+        <el-table-column prop="zip" label="邮编" width="120"> </el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small"
+              >查看</el-button
+            >
+            <el-button type="text" size="small">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-size="6"
+        layout="total, prev, pager, next, jumper"
+        :total="400"
+      >
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -24,15 +89,342 @@ export default {
   data() {
     return {
       ordersForm: {
-        region: "",
-        user: "",
+        orderId: "",
+        consignee: "",
+        phoneNum: "",
+        state: "",
       },
+      value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+      tableData: [
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+        {
+          orderId: "15161718",
+          time: "19:00:00",
+          phone: "13666888777",
+          consignee: "赵四",
+          address: "成都市高新区发财路888号",
+          sendTime: "15:10:05",
+          tips: "微辣",
+          money: "108",
+          state: "已受理",
+        },
+      ],
     };
+  },
+  methods: {
+    onSubmit() {
+      alert("查询");
+    },
+    handleClick(row) {
+      console.log(row);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .main {
+  .el-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    .timer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-bottom: 10px;
+      .el-date-editor {
+        margin: 0px 10px;
+        .el-range-separator {
+          width: 6% !important;
+        }
+      }
+    }
+  }
 }
 </style>
