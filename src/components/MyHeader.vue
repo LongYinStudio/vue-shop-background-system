@@ -1,24 +1,33 @@
 /** * 头部菜单 */
 <template>
   <div class="main">
-    <div class="left">
-      <span v-for="(item, index) in title" :key="index">
-        <i
-          v-if="index > 0"
-          class="el-breadcrumb__separator el-icon-arrow-right"
-        />
-        <span>{{ item }}</span>
-      </span>
-    </div>
+    <el-breadcrumb class="left" separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item v-for="(item, index) in title" :key="index">{{
+        item
+      }}</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="right">
-      <span>欢迎你 {{ $store.state.user.name }}</span>
-      <el-avatar :src="require('@/assets/img/head.jpg')"></el-avatar>
+      <span
+        >欢迎你,
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            {{ $store.state.user.name
+            }}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item divided>退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </span>
+      <el-avatar :src="avatar"></el-avatar>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "MyHeader",
+  props: ["avatar"],
   data() {
     return {
       title: ["首页"],
@@ -49,12 +58,6 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    img {
-      --size: 16px;
-      width: var(--size);
-      height: var(--size);
-      margin: 0px 2px;
-    }
   }
 
   .right {
@@ -64,6 +67,14 @@ export default {
     * {
       padding: 0px 6px;
     }
+  }
+
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409eff;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
   }
 }
 </style>

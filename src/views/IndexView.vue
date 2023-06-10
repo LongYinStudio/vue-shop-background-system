@@ -5,7 +5,7 @@
     </el-aside>
     <el-container class="main-con">
       <el-header class="index-header">
-        <MyHeader></MyHeader>
+        <MyHeader :avatar="myAvatar"></MyHeader>
       </el-header>
       <el-main clss="index-main">
         <router-view></router-view>
@@ -21,7 +21,9 @@ import SideNav from "@/components/SideNav.vue";
 export default {
   name: "IndexView",
   data() {
-    return {};
+    return {
+      myAvatar: require("@/assets/img/head.jpg"),
+    };
   },
   components: {
     MyHeader,
