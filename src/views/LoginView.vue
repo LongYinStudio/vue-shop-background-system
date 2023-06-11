@@ -67,20 +67,24 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.ruleForm);
           this.$axios
             .post("http://localhost:5000/users/checkLogin", {
               account: this.ruleForm.username,
               password: this.ruleForm.password,
             })
             .then((res) => {
-              console.log(res);
+              // console.log("登录");
+              // console.log(res);
               if (res.data.code === 0) {
                 this.$message({
                   message: "登录成功",
                   type: "success",
                 });
                 this.logining = false;
+                this.$store.commit("UPDATE_USER", this.ruleForm.username);
+                //把token存入本地存储
+                localStorage.setItem("token", res.data.token);
+                //跳转到首页
                 this.$store.commit("login", "true");
                 this.$router.push({ path: "/home" });
               }

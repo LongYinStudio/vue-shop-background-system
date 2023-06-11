@@ -177,13 +177,7 @@ export default {
           "http://localhost:5000/users/list?currentPage=" +
             this.currentPage +
             "&pageSize=" +
-            this.pageSize,
-          {
-            headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJjdGltZSI6IjIwMjItMDEtMDRUMDM6NTM6NDMuMDAwWiIsImFjY291bnQiOiJhZG1pbiIsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlckdyb3VwIjoi6LaF57qn566h55CG5ZGYIiwiaW1nVXJsIjoiaHR0cDovLzEyNy4wLjAuMTo1MDAwL2ltZ3MvZGVmYXVsdC5wbmciLCJpYXQiOjE2ODY0NTQyODgsImV4cCI6MTY4NzA1OTA4OH0.C0ZRWNMG_GaN-doD0OaWwIHLFLvi9Wqov6msQZFQwcw",
-            },
-          }
+            this.pageSize
         )
         .then((res) => {
           // console.log(res.data.total);
@@ -205,12 +199,7 @@ export default {
     },
     delUser(id) {
       this.$axios
-        .get("http://localhost:5000/users/del?id=" + id, {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJjdGltZSI6IjIwMjItMDEtMDRUMDM6NTM6NDMuMDAwWiIsImFjY291bnQiOiJhZG1pbiIsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlckdyb3VwIjoi6LaF57qn566h55CG5ZGYIiwiaW1nVXJsIjoiaHR0cDovLzEyNy4wLjAuMTo1MDAwL2ltZ3MvZGVmYXVsdC5wbmciLCJpYXQiOjE2ODY0NTQyODgsImV4cCI6MTY4NzA1OTA4OH0.C0ZRWNMG_GaN-doD0OaWwIHLFLvi9Wqov6msQZFQwcw",
-          },
-        })
+        .get("http://localhost:5000/users/del?id=" + id)
         .then((res) => {
           console.log(res);
           this.$message({
@@ -228,16 +217,11 @@ export default {
     },
     editUser(id, account, userGroup) {
       this.$axios
-        .post(
-          "http://localhost:5000/users/edit",
-          { id: id, account: account, userGroup: userGroup },
-          {
-            headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJjdGltZSI6IjIwMjItMDEtMDRUMDM6NTM6NDMuMDAwWiIsImFjY291bnQiOiJhZG1pbiIsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlckdyb3VwIjoi6LaF57qn566h55CG5ZGYIiwiaW1nVXJsIjoiaHR0cDovLzEyNy4wLjAuMTo1MDAwL2ltZ3MvZGVmYXVsdC5wbmciLCJpYXQiOjE2ODY0NTQyODgsImV4cCI6MTY4NzA1OTA4OH0.C0ZRWNMG_GaN-doD0OaWwIHLFLvi9Wqov6msQZFQwcw",
-            },
-          }
-        )
+        .post("http://localhost:5000/users/edit", {
+          id: id,
+          account: account,
+          userGroup: userGroup,
+        })
         .then((res) => {
           console.log(res);
           this.$message({

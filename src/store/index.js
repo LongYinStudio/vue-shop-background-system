@@ -12,6 +12,9 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
+    UPDATE_USER(state, payload) {
+      state.user.name = payload;
+    }
   },
   actions: {
   },

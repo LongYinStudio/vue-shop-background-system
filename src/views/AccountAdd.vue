@@ -35,8 +35,8 @@
         </el-form-item>
         <el-form-item label="用户组">
           <el-select v-model="ruleForm.group" placeholder="请选择用户组">
-            <el-option label="普通管理员" value="normal"></el-option>
-            <el-option label="超级管理员" value="super"></el-option>
+            <el-option label="普通管理员" value="普通管理员"></el-option>
+            <el-option label="超级管理员" value="超级管理员"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -99,8 +99,39 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
+        console.log(this.ruleForm.username);
         if (valid) {
-          alert("submit!");
+          this.$axios
+            .post("http://localhost:5000/users/add", {
+              account: this.ruleForm.user,
+              password: this.ruleForm.pass,
+              userGroup: this.ruleForm.group,
+            })
+            .then((res) => {
+              console.log(res);
+              if (res.data.code === 0) {
+                this.$message({
+                  message: "添加成功",
+                  type: "success",
+                });
+                this.$router.push("/accountList");
+              }
+              if (res.data.code === 1) {
+                this.$message({
+                  message: "添加失败",
+                  type: "error",
+                });
+              }
+              if (res.data.code === 5001) {
+                this.$message({
+                  message: "参数错误",
+                  type: "error",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           console.log("error submit!!");
           return false;

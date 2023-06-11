@@ -2,7 +2,7 @@
   <div class="main">
     <el-card class="box-card">
       <div slot="header" class="header">
-        <span>添加账号</span>
+        <span>修改密码</span>
       </div>
       <el-form
         :model="ruleForm"
@@ -12,7 +12,7 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="原密码" prop="primaryPassword">
+        <el-form-item label="原密码" required prop="primaryPassword">
           <el-input
             type="text"
             v-model="ruleForm.primaryPassword"
@@ -47,12 +47,6 @@
 <script>
 export default {
   data() {
-    var checkPrimaryPassword = (rule, value, callback) => {
-      // 验证原始密码是否正确匹配
-      if (!value) {
-        return callback(new Error("不能为空"));
-      }
-    };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -81,7 +75,7 @@ export default {
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        primaryPassword: [{ validator: checkPrimaryPassword, trigger: "blur" }],
+        // primaryPassword: [{ validator: checkPrimaryPassword, trigger: "blur" }],
       },
     };
   },
@@ -89,7 +83,60 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          this.$axios
+            .get(
+              "http://localhost:5000/users/checkoldpwd?oldPwd=" +
+                this.ruleForm.primaryPassword
+            )
+            .then((res) => {
+              if (res.data.code === 200) {
+                console.log(1);
+                this.$axios
+                  .post("http://localhost:5000/users/editpwd", {
+                    newPwd: this.ruleForm.pass,
+                  })
+                  .then((res) => {
+                    console.log(1);
+                    console.log(res);
+                    if (res.data.code === 0) {
+                      this.$message({
+                        message: "修改成功",
+                        type: "success",
+                      });
+                    }
+                    if (res.data.code === 1) {
+                      this.$message({
+                        message: "修改失败",
+                        type: "error",
+                      });
+                    }
+                    if (res.data.code === 5001) {
+                      this.$message({
+                        message: "参数错误",
+                        type: "error",
+                      });
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+              if (res.data.code === 201) {
+                this.$message({
+                  message: "原密码验证失败",
+                  type: "error",
+                });
+              }
+              if (res.data.code === 5001) {
+                this.$message({
+                  message: "参数错误",
+                  type: "error",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           console.log("error submit!!");
           return false;
