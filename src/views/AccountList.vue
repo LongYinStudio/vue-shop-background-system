@@ -17,8 +17,10 @@
         <el-table-column prop="group" label="用户组" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="date" label="创建时间" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{ new Date(scope.row.date).toLocaleString() }}
+          </template>
         </el-table-column>
-
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
@@ -41,7 +43,7 @@
           :page-sizes="[5, 10, 20, 50, 100, 150]"
           :page-size="5"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="users.length"
+          :total="total"
         >
         </el-pagination>
         <div btn>
@@ -73,8 +75,8 @@
         </el-form-item>
         <el-form-item label="用户组">
           <el-select v-model="ruleForm.group" placeholder="请选择用户组">
-            <el-option label="普通管理员" value="normal"></el-option>
-            <el-option label="超级管理员" value="super"></el-option>
+            <el-option label="普通管理员" value="普通管理员"></el-option>
+            <el-option label="超级管理员" value="超级管理员"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -97,99 +99,13 @@ export default {
         return callback(new Error("不能为空"));
       }
     };
-
     return {
-      users: [
-        {
-          user: "admin",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "root",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "longyinstudio",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "张三",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "李四",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "王五",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "赵六",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "穆森林",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "guest",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "som",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "tom",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "小刘",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "小龙",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "文文",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "刘军",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "小何",
-          group: "普通管理员",
-          date: "2016-05-03",
-        },
-        {
-          user: "流星",
-          group: "超级管理员",
-          date: "2016-05-03",
-        },
-      ],
+      total: 0,
       tableData: [],
       multipleSelection: [],
       dialogVisible: false,
       ruleForm: {
+        id: -1,
         user: "",
         group: "",
         primaryPassword: "",
@@ -199,7 +115,6 @@ export default {
       },
       currentPage: 1,
       pageSize: 5,
-      changingIndex: -1, // 修改用户信息的index
     };
   },
   methods: {
@@ -227,46 +142,121 @@ export default {
     },
     handleEdit(index, row) {
       this.dialogVisible = true;
-      let i = index + this.pageSize * (this.currentPage - 1);
-      this.changingIndex = i;
       this.ruleForm.group = row.group;
       this.ruleForm.user = row.user;
+      this.ruleForm.id = row.id;
+      console.log("点击编辑");
     },
     handleSubmit() {
-      if (this.ruleForm.group === "normal") {
-        this.users[this.changingIndex].group = "普通管理员";
-      }
-      if (this.ruleForm.group === "super") {
-        this.users[this.changingIndex].group = "超级管理员";
-      }
-      this.users[this.changingIndex].user = this.ruleForm.user;
+      this.editUser(this.ruleForm.id, this.ruleForm.user, this.ruleForm.group);
       this.dialogVisible = false;
+      console.log("点击确定");
     },
-    handleDelete(index) {
-      let i = index + this.pageSize * (this.currentPage - 1);
-      this.users.splice(i, 1);
-      this.tableData = this.users.slice(0, this.pageSize);
+    handleDelete(index, row) {
+      this.delUser(row.id);
+      // console.log(row.id);
+      this.getUsers();
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.tableData = this.users.slice(0, this.pageSize);
+      this.getUsers();
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.tableData = this.users.slice(
-        this.pageSize * (val - 1),
-        this.pageSize * val
-      );
+      this.getUsers();
     },
     multipleDel() {
       this.multipleSelection.forEach((item) => {
-        this.users.splice(this.users.indexOf(item), 1);
-        this.tableData = this.users.slice(0, this.pageSize);
+        this.delUser(item.id);
       });
+      this.getUsers();
+    },
+    getUsers() {
+      this.$axios
+        .get(
+          "http://localhost:5000/users/list?currentPage=" +
+            this.currentPage +
+            "&pageSize=" +
+            this.pageSize,
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJjdGltZSI6IjIwMjItMDEtMDRUMDM6NTM6NDMuMDAwWiIsImFjY291bnQiOiJhZG1pbiIsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlckdyb3VwIjoi6LaF57qn566h55CG5ZGYIiwiaW1nVXJsIjoiaHR0cDovLzEyNy4wLjAuMTo1MDAwL2ltZ3MvZGVmYXVsdC5wbmciLCJpYXQiOjE2ODY0NTQyODgsImV4cCI6MTY4NzA1OTA4OH0.C0ZRWNMG_GaN-doD0OaWwIHLFLvi9Wqov6msQZFQwcw",
+            },
+          }
+        )
+        .then((res) => {
+          // console.log(res.data.total);
+          this.total = res.data.total;
+          this.tableData = [];
+          res.data.data.forEach((element) => {
+            this.tableData.push({
+              id: element.id,
+              user: element.account,
+              date: new Date(element.ctime),
+              group: element.userGroup,
+              password: element.password,
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    delUser(id) {
+      this.$axios
+        .get("http://localhost:5000/users/del?id=" + id, {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJjdGltZSI6IjIwMjItMDEtMDRUMDM6NTM6NDMuMDAwWiIsImFjY291bnQiOiJhZG1pbiIsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlckdyb3VwIjoi6LaF57qn566h55CG5ZGYIiwiaW1nVXJsIjoiaHR0cDovLzEyNy4wLjAuMTo1MDAwL2ltZ3MvZGVmYXVsdC5wbmciLCJpYXQiOjE2ODY0NTQyODgsImV4cCI6MTY4NzA1OTA4OH0.C0ZRWNMG_GaN-doD0OaWwIHLFLvi9Wqov6msQZFQwcw",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.$message({
+            message: "删除成功",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message({
+            message: "删除失败",
+            type: "error",
+          });
+        });
+    },
+    editUser(id, account, userGroup) {
+      this.$axios
+        .post(
+          "http://localhost:5000/users/edit",
+          { id: id, account: account, userGroup: userGroup },
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJjdGltZSI6IjIwMjItMDEtMDRUMDM6NTM6NDMuMDAwWiIsImFjY291bnQiOiJhZG1pbiIsInBhc3N3b3JkIjoiMTIzNDU2IiwidXNlckdyb3VwIjoi6LaF57qn566h55CG5ZGYIiwiaW1nVXJsIjoiaHR0cDovLzEyNy4wLjAuMTo1MDAwL2ltZ3MvZGVmYXVsdC5wbmciLCJpYXQiOjE2ODY0NTQyODgsImV4cCI6MTY4NzA1OTA4OH0.C0ZRWNMG_GaN-doD0OaWwIHLFLvi9Wqov6msQZFQwcw",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          this.$message({
+            message: "修改成功",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message({
+            message: "修改失败",
+            type: "error",
+          });
+        });
+      this.getUsers();
     },
   },
   mounted() {
-    this.tableData = this.users.slice(0, this.pageSize);
+    this.getUsers();
   },
 };
 </script>

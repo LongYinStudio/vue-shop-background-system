@@ -40,8 +40,8 @@ export default {
   watch: {
     $route: {
       handler(to) {
-        console.log("路由");
-        console.log(to);
+        // console.log("路由");
+        // console.log(to);
         this.title = to.meta.title.split("/");
       },
       deep: true,
