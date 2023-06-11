@@ -20,7 +20,9 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item divided>退出</el-dropdown-item>
+            <el-dropdown-item divided @click.native="exit()"
+              >退出</el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
       </span>
@@ -45,6 +47,14 @@ export default {
         this.title = to.meta.title.split("/");
       },
       deep: true,
+    },
+  },
+  methods: {
+    exit() {
+      this.$message("exit");
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      this.$router.push("/");
     },
   },
   mounted() {
