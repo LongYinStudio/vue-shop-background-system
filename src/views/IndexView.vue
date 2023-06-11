@@ -25,6 +25,9 @@ export default {
       myAvatar: require("@/assets/img/head.jpg"),
     };
   },
+  mounted() {
+    this.$store.commit("UPDATE_USER", localStorage.getItem("username"));
+  },
   components: {
     MyHeader,
     SideNav,

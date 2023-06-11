@@ -81,9 +81,9 @@ export default {
                   type: "success",
                 });
                 this.logining = false;
-                this.$store.commit("UPDATE_USER", this.ruleForm.username);
                 //把token存入本地存储
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("username", this.ruleForm.username);
                 //跳转到首页
                 this.$store.commit("login", "true");
                 this.$router.push({ path: "/home" });

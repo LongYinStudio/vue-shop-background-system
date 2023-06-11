@@ -24,12 +24,17 @@
           ></el-col>
         </el-form-item>
         <el-form-item label="店铺头像" prop="avatar">
-          <el-avatar shape="square" :size="148" :src="url"></el-avatar>
+          <el-avatar shape="square" :size="148" :src="form.avatar"></el-avatar>
         </el-form-item>
         <el-form-item label="店铺图片" prop="imgs">
           <div shopImg>
-            <el-avatar shape="square" :size="148" :src="url"></el-avatar>
-            <el-avatar shape="square" :size="148" :src="url"></el-avatar>
+            <el-avatar
+              v-for="item in form.pics"
+              :key="item"
+              shape="square"
+              :size="148"
+              :src="item"
+            ></el-avatar>
             <el-upload action="#" list-type="picture-card" :auto-upload="false">
               <i slot="default" class="el-icon-plus"></i>
               <div slot="file" slot-scope="{ file }">
@@ -101,8 +106,8 @@
             is-range
             v-model="form.scaleTime"
             range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
+            :start-placeholder="form.scaleTime[0]"
+            :end-placeholder="form.scaleTime[1]"
             placeholder="选择时间范围"
           >
           </el-time-picker
@@ -124,15 +129,15 @@ export default {
         name: "",
         desc: "",
         avatar: "",
+        pics: [],
         imgs: "",
         postageFee: 0,
         postageDesc: "",
         score: 0,
         salesVolume: 0,
         activity: [],
-        scaleTime: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+        scaleTime: ["9:00:00", "18:00:00"],
       },
-      url: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
@@ -153,6 +158,28 @@ export default {
     handleDownload(file) {
       console.log(file);
     },
+  },
+  created() {
+    this.$axios
+      .get("http://localhost:5000/shop/info")
+      .then((res) => {
+        console.log(res.data.data);
+        this.form = {
+          name: res.data.data.name,
+          desc: res.data.data.bulletin,
+          avatar: res.data.data.avatar,
+          pics: res.data.data.pics,
+          postageFee: res.data.data.deliveryPrice,
+          postageDesc: res.data.data.description,
+          score: res.data.data.score,
+          salesVolume: res.data.data.sellCount,
+          activity: res.data.data.supports,
+          scaleTime: res.data.data.date,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
