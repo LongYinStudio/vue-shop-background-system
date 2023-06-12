@@ -56,13 +56,6 @@ export default {
       },
     };
   },
-  // 创建完毕状态(里面是操作)
-  created() {
-    this.$message({
-      message: "账号密码不为空即可",
-      type: "success",
-    });
-  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
