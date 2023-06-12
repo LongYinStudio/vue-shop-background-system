@@ -198,10 +198,21 @@ export default {
         width: 300px !important;
       }
       [shopImg] {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 10px;
+        width: 330px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .el-avatar {
+          margin: 0px 8px 8px 0px;
+        }
       }
+      [shopImg] > div {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
       .el-checkbox-group {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
