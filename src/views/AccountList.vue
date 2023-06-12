@@ -202,10 +202,24 @@ export default {
         .get("http://localhost:5000/users/del?id=" + id)
         .then((res) => {
           console.log(res);
-          this.$message({
-            message: "删除成功",
-            type: "success",
-          });
+          if (res.data.code === 0) {
+            this.$message({
+              message: "删除成功",
+              type: "success",
+            });
+          }
+          if (res.data.code === 1) {
+            this.$message({
+              message: "删除失败",
+              type: "error",
+            });
+          }
+          if (res.data.code === 5001) {
+            this.$message({
+              message: "参数错误",
+              type: "error",
+            });
+          }
         })
         .catch((err) => {
           console.log(err);

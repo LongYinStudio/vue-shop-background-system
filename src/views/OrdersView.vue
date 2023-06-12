@@ -439,7 +439,6 @@ export default {
     margin-top: 20px;
   }
   ::v-deep .el-range-separator {
-    // width: 20px !important;
     padding: 0px !important;
   }
 }

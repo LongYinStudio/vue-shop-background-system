@@ -213,7 +213,7 @@ export default {
       this.ruleForm.ctime = row.ctime;
     },
     handleSubmit() {
-      this.editUser(
+      this.editGoods(
         this.ruleForm.name,
         this.ruleForm.category,
         this.ruleForm.price,
@@ -225,7 +225,7 @@ export default {
       this.dialogVisible = false;
     },
     handleDelete(index, row) {
-      this.delUser(row.id);
+      this.delGoods(row.id);
       // console.log(row.id);
       this.getGoods();
     },
@@ -239,7 +239,7 @@ export default {
     },
     multipleDel() {
       this.multipleSelection.forEach((item) => {
-        this.delUser(item.id);
+        this.delGoods(item.id);
       });
       this.getGoods();
     },
@@ -271,7 +271,7 @@ export default {
           console.log(err);
         });
     },
-    editUser(name, category, price, imgUrl, goodsDesc, id, ctime) {
+    editGoods(name, category, price, imgUrl, goodsDesc, id, ctime) {
       this.$axios
         .post("http://localhost:5000/goods/edit", {
           name: name,
@@ -297,6 +297,38 @@ export default {
           });
         });
       this.getUsers();
+    },
+    delGoods(id) {
+      this.$axios
+        .get("http://localhost:5000/goods/del?id=" + id)
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 0) {
+            this.$message({
+              message: "删除成功",
+              type: "success",
+            });
+          }
+          if (res.data.code === 1) {
+            this.$message({
+              message: "删除失败",
+              type: "error",
+            });
+          }
+          if (res.data.code === 5001) {
+            this.$message({
+              message: "参数错误",
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message({
+            message: "删除失败",
+            type: "error",
+          });
+        });
     },
   },
   mounted() {
