@@ -223,6 +223,7 @@ export default {
         this.ruleForm.ctime
       );
       this.dialogVisible = false;
+      console.log(this.dialogVisible);
     },
     handleDelete(index, row) {
       this.delGoods(row.id);
@@ -296,7 +297,7 @@ export default {
             type: "error",
           });
         });
-      this.getUsers();
+      this.getGoods();
     },
     delGoods(id) {
       this.$axios
