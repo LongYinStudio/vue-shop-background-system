@@ -8,6 +8,7 @@
       background-color="#304156"
       text-color="#fff"
       active-text-color="#3872b0"
+      unique-opened
     >
       <el-menu-item index="/home">
         <i class="el-icon-s-home"></i>
