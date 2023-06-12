@@ -7,21 +7,33 @@
       </div>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="id" label="序号" width="180"> </el-table-column>
-        <el-table-column prop="name" label="分类名称" width="180">
+        <el-table-column prop="cateName" label="分类名称" width="180">
+          <template slot-scope="scope">
+            <div v-if="scope.$index != editIndex">{{ scope.row.cateName }}</div>
+            <el-input v-model="scope.row.cateName" v-else></el-input>
+          </template>
         </el-table-column>
         <el-table-column label="是否启用" width="180">
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.enable"
+              v-model="scope.row.state"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              :disabled="scope.$index != editIndex"
             ></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="280">
-          <template>
+          <template slot-scope="scope">
+            <el-button
+              type="success"
+              v-if="scope.$index === editIndex"
+              @click="save(scope.$index, scope.row)"
+              >保存</el-button
+            >
             <el-button
               type="default"
+              v-else
               @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button
             >
@@ -34,7 +46,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         layout="total, prev, pager, next, jumper"
-        :total="goodsClass.length"
+        :total="total"
       >
       </el-pagination>
     </el-card>
@@ -50,33 +62,50 @@ export default {
       tableData: [],
       currentPage: 1,
       pageSize: 5,
+      total: -1,
+      editIndex: -1,
     };
   },
-
   methods: {
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.tableData = this.goodsClass.slice(
-        this.pageSize * (val - 1),
-        this.pageSize * val
-      );
+      this.getClasses();
     },
     handleEdit(index, row) {
+      this.editIndex = index;
+      console.log(index);
       row.edit = true;
     },
     save(row, index) {
       console.log(index);
+      this.editIndex = -1;
+    },
+    getClasses() {
+      this.$axios
+        .get(
+          "http://localhost:5000/goods/catelist?currentPage=" +
+            this.currentPage +
+            "&pageSize=" +
+            this.pageSize
+        )
+        .then((res) => {
+          this.total = res.data.total;
+          this.tableData = [];
+          res.data.data.forEach((element) => {
+            this.tableData.push({
+              id: element.id,
+              cateName: element.cateName,
+              state: element.state,
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
-  mounted() {
-    for (let index = 0; index < 16; index++) {
-      this.goodsClass.push({
-        id: index + 1,
-        name: `张三${index + 1}`,
-        enable: true,
-      });
-    }
-    this.tableData = this.goodsClass.slice(0, this.pageSize);
+  created() {
+    this.getClasses();
   },
 };
 </script>
