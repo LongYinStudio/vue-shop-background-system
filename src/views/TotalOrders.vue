@@ -157,4 +157,8 @@ export default {
     }
   }
 }
+
+::v-deep .el-range-separator {
+  padding: 0px !important;
+}
 </style>

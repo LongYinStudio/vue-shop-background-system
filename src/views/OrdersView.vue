@@ -432,14 +432,15 @@ export default {
       padding-bottom: 10px;
       .el-date-editor {
         margin: 0px 10px;
-        .el-range-separator {
-          width: 6% !important;
-        }
       }
     }
   }
   .el-pagination {
     margin-top: 20px;
+  }
+  ::v-deep .el-range-separator {
+    // width: 20px !important;
+    padding: 0px !important;
   }
 }
 </style>
