@@ -80,4 +80,8 @@ export default {
     color: #fff;
   }
 }
+.el-menu {
+  height: 100%;
+  border-right: none;
+}
 </style>
