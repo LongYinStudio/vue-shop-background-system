@@ -87,6 +87,14 @@ const routes = [
         component: () => import('@/views/AccountModify.vue')
       },
       {
+        path: '/accountCenter',
+        name: 'accountCenter',
+        meta: {
+          title: "账号管理/个人中心"
+        },
+        component: () => import('@/views/AccountCenter.vue')
+      },
+      {
         path: '/totalGoods',
         name: 'totalGoods',
         meta: {

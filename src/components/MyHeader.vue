@@ -19,7 +19,9 @@
             }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item @click.native="goCenter()"
+              >个人中心</el-dropdown-item
+            >
             <el-dropdown-item divided @click.native="exit()"
               >退出</el-dropdown-item
             >
@@ -55,6 +57,9 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("username");
       this.$router.push("/");
+    },
+    goCenter() {
+      this.$router.push("/accountCenter");
     },
   },
   mounted() {

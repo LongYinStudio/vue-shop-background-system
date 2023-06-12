@@ -36,6 +36,7 @@
           <i class="el-icon-user"></i>
           <span slot="title">账号管理</span>
         </template>
+        <el-menu-item index="/accountCenter">个人中心</el-menu-item>
         <el-menu-item index="/accountList">账号列表</el-menu-item>
         <el-menu-item index="/accountAdd">添加账号</el-menu-item>
         <el-menu-item index="/accountModify">修改密码</el-menu-item>
