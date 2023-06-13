@@ -76,8 +76,42 @@ export default {
       console.log(index);
       row.edit = true;
     },
-    save(row, index) {
-      console.log(index);
+    save(index, row) {
+      console.log(row);
+      this.$axios
+        .post("http://localhost:5000/goods/editcate", {
+          id: row.id,
+          cateName: row.cateName,
+          state: row.state,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 0) {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+          }
+          if (res.data.code === 1) {
+            this.$message({
+              message: "修改失败",
+              type: "error",
+            });
+          }
+          if (res.data.code === 5001) {
+            this.$message({
+              message: "参数错误",
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message({
+            message: "连接后台失败",
+            type: "error",
+          });
+        });
       this.editIndex = -1;
     },
     getClasses() {
