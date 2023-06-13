@@ -66,8 +66,8 @@ export default {
               password: this.ruleForm.password,
             })
             .then((res) => {
-              // console.log("登录");
-              // console.log(res);
+              console.log("登录");
+              console.log(res);
               if (res.data.code === 0) {
                 this.$message({
                   message: "登录成功",

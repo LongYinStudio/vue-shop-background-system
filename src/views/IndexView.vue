@@ -5,7 +5,7 @@
     </el-aside>
     <el-container class="main-con">
       <el-header class="index-header">
-        <MyHeader :avatar="myAvatar"></MyHeader>
+        <MyHeader :avatar="info.imgUrl"></MyHeader>
       </el-header>
       <el-main clss="index-main">
         <router-view></router-view>
@@ -22,11 +22,28 @@ export default {
   name: "IndexView",
   data() {
     return {
-      myAvatar: require("@/assets/img/head.jpg"),
+      info: {
+        imgUrl: require("@/assets/img/head.jpg"),
+      },
     };
   },
   mounted() {
     this.$store.commit("UPDATE_USER", localStorage.getItem("username"));
+    this.$axios
+      .get("http://localhost:5000/users/info")
+      .then((res) => {
+        this.info = {
+          id: res.data.id,
+          ctime: res.data.ctime,
+          account: res.data.account,
+          userGroup: res.data.userGroup,
+          imgUrl: res.data.imgUrl,
+        };
+        console.log(this.info);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   components: {
     MyHeader,
