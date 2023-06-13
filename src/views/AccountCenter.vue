@@ -11,7 +11,6 @@
         <div class="line"></div>
         <div class="item">用户组:&emsp;{{ this.info.userGroup }}</div>
         <div class="line"></div>
-
         <div class="item">
           创建时间:&emsp;{{ new Date(this.info.ctime).toLocaleString() }}
         </div>

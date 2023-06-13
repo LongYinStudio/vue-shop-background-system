@@ -48,9 +48,10 @@
         </el-table-column>
         <el-table-column prop="time" label="下单时间" width="120">
           <template slot-scope="scope">
-            {{ new Date(scope.row.time).toLocaleString().substring(0, 10) }}
+            {{ scope.row.time }}
+            <!-- {{ new Date(scope.row.time).toLocaleString().substring(0, 10) }}
             <br />
-            {{ new Date(scope.row.time).toLocaleString().substring(11) }}
+            {{ new Date(scope.row.time).toLocaleString().substring(11) }} -->
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="120">
@@ -91,9 +92,10 @@
         </el-table-column>
         <el-table-column prop="sendTime" label="送达时间" width="120">
           <template slot-scope="scope">
-            {{ new Date(scope.row.sendTime).toLocaleString().substring(0, 10) }}
+            {{ scope.row.sendTime }}
+            <!-- {{ new Date(scope.row.sendTime).toLocaleString().substring(0, 10) }}
             <br />
-            {{ new Date(scope.row.sendTime).toLocaleString().substring(11) }}
+            {{ new Date(scope.row.sendTime).toLocaleString().substring(11) }} -->
           </template>
         </el-table-column>
         <el-table-column prop="tips" label="用户备注" width="120">
@@ -229,11 +231,11 @@ export default {
             this.tableData.push({
               id: element.id,
               orderId: element.orderNo,
-              time: element.orderTime,
+              time: new Date(element.orderTime).toLocaleString(),
               phone: element.phone,
               consignee: element.consignee,
               address: element.deliverAddress,
-              sendTime: element.deliveryTime,
+              sendTime: new Date(element.deliveryTime).toLocaleString(),
               tips: element.remarks,
               money: element.orderAmount,
               state: element.orderState,
@@ -249,6 +251,7 @@ export default {
       row.edit = true;
     },
     save(index, row) {
+      console.log(row);
       this.editIndex = -1;
       this.$axios
         .post("http://localhost:5000/order/edit", {

@@ -77,7 +77,6 @@ export default {
       row.edit = true;
     },
     save(index, row) {
-      console.log(row);
       this.$axios
         .post("http://localhost:5000/goods/editcate", {
           id: row.id,
