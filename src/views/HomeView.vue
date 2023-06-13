@@ -40,6 +40,9 @@ export default {
           num: "102,400",
         },
       ],
+      class: ["一月", "二月", "三月", "四月", "五月", "六月", "七月"],
+      amountData: [120, 132, 101, 134, 90, 230, 210],
+      orderData: [110, 162, 81, 104, 70, 210, 200],
     };
   },
   components: {
@@ -47,57 +50,63 @@ export default {
   },
 
   mounted() {
-    this.$echarts.init(this.$refs.home_chart).setOption({
-      title: {
-        text: "数据统计",
-      },
-      tooltip: {
-        trigger: "axis",
-      },
-      legend: {
-        data: ["订单", "销售额", "注册人数", "管理员人数"],
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true,
-      },
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: ["一月", "二月", "三月", "四月", "五月", "六月", "七月"],
-      },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          name: "订单",
-          type: "line",
-          stack: "Total",
-          data: [120, 132, 101, 134, 90, 230, 210],
+    this.$axios
+      .get("http://localhost:5000/order/totaldata")
+      .then((res) => {
+        console.log(res);
+        this.cardData[0].num = res.data.totalOrder;
+        this.cardData[1].num = res.data.totalAmount;
+        this.cardData[2].num = res.data.todayOrder;
+        this.cardData[3].num = res.data.totayAmount;
+        this.class = res.data.xData;
+        this.amountData = res.data.amountData;
+        this.orderData = res.data.orderData;
+        this.drawLineGraph();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  methods: {
+    drawLineGraph() {
+      this.$echarts.init(this.$refs.home_chart).setOption({
+        title: {
+          text: "数据统计",
         },
-        {
-          name: "销售额",
-          type: "line",
-          stack: "Total",
-          data: [220, 182, 191, 234, 290, 330, 310],
+        tooltip: {
+          trigger: "axis",
         },
-        {
-          name: "注册人数",
-          type: "line",
-          stack: "Total",
-          data: [150, 232, 201, 154, 190, 330, 410],
+        legend: {
+          data: ["订单", "金额"],
         },
-        {
-          name: "管理员人数",
-          type: "line",
-          stack: "Total",
-          data: [320, 332, 301, 334, 390, 330, 320],
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
         },
-      ],
-    });
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: this.class,
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            name: "订单",
+            type: "line",
+            data: this.orderData,
+          },
+          {
+            name: "金额",
+            type: "line",
+            data: this.amountData,
+          },
+        ],
+      });
+    },
   },
 };
 </script>
