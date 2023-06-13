@@ -53,7 +53,6 @@ export default {
     this.$axios
       .get("http://localhost:5000/order/totaldata")
       .then((res) => {
-        console.log(res);
         this.cardData[0].num = res.data.totalOrder;
         this.cardData[1].num = res.data.totalAmount;
         this.cardData[2].num = res.data.todayOrder;
