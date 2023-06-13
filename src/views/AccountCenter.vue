@@ -11,7 +11,10 @@
         <div class="line"></div>
         <div class="item">用户组:&emsp;{{ this.info.userGroup }}</div>
         <div class="line"></div>
-        <div class="item">创建时间:&emsp;{{ this.info.ctime }}</div>
+
+        <div class="item">
+          创建时间:&emsp;{{ new Date(this.info.ctime).toLocaleString() }}
+        </div>
         <div class="line"></div>
         <div class="item" avatar>
           管理员头像:&emsp;<el-image

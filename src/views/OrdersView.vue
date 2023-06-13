@@ -47,6 +47,11 @@
         <el-table-column fixed prop="orderId" label="订单号" width="150">
         </el-table-column>
         <el-table-column prop="time" label="下单时间" width="120">
+          <template slot-scope="scope">
+            {{ new Date(scope.row.time).toLocaleString().substring(0, 10) }}
+            <br />
+            {{ new Date(scope.row.time).toLocaleString().substring(11) }}
+          </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="120">
         </el-table-column>
@@ -55,6 +60,11 @@
         <el-table-column prop="address" label="地址" width="180">
         </el-table-column>
         <el-table-column prop="sendTime" label="送达时间" width="120">
+          <template slot-scope="scope">
+            {{ new Date(scope.row.sendTime).toLocaleString().substring(0, 10) }}
+            <br />
+            {{ new Date(scope.row.sendTime).toLocaleString().substring(11) }}
+          </template>
         </el-table-column>
         <el-table-column prop="tips" label="用户备注" width="120">
         </el-table-column>
