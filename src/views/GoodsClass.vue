@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="header">
         <span>商品分类</span>
-        <el-button type="primary">添加分类</el-button>
+        <el-button type="primary" @click="addClass">添加分类</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="id" label="序号" width="180"> </el-table-column>
@@ -37,7 +37,9 @@
               @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button
             >
-            <el-button type="danger">删除</el-button>
+            <el-button type="danger" @click="handleDel(scope.$index, scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -50,6 +52,36 @@
       >
       </el-pagination>
     </el-card>
+    <el-dialog title="编辑账号" :visible.sync="dialogVisible" width="30%">
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+      >
+        <el-form-item label="类名" prop="user">
+          <el-input
+            type="text"
+            v-model="ruleForm.class"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="是否启用">
+          <el-switch
+            v-model="ruleForm.state"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleSubmit(ruleForm)"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -64,6 +96,14 @@ export default {
       pageSize: 5,
       total: -1,
       editIndex: -1,
+      dialogVisible: false,
+      ruleForm: {
+        class: "",
+        state: false,
+      },
+      rules: {
+        class: [{ required: true, trigger: "blur" }],
+      },
     };
   },
   methods: {
@@ -71,10 +111,73 @@ export default {
       this.currentPage = val;
       this.getClasses();
     },
-    handleEdit(index, row) {
-      this.editIndex = index;
-      console.log(index);
-      row.edit = true;
+    addClass() {
+      this.dialogVisible = true;
+    },
+    handleSubmit() {
+      this.dialogVisible = false;
+      this.$axios
+        .post("http://localhost:5000/goods/addcate", {
+          cateName: this.ruleForm.class,
+          state: this.ruleForm.state,
+        })
+        .then((res) => {
+          if (res.data.code === 0) {
+            this.$message({
+              message: "添加成功",
+              type: "success",
+            });
+            this.getClasses();
+          }
+          if (res.data.code === 1) {
+            this.$message({
+              message: "添加失败",
+              type: "error",
+            });
+          }
+          if (res.data.code === 5001) {
+            this.$message({
+              message: "参数错误",
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    handleDel(index, row) {
+      this.$axios
+        .get("http://localhost:5000/goods/delcate?id=" + row.id)
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 0) {
+            this.$message({
+              message: "删除成功",
+              type: "success",
+            });
+            this.getClasses();
+          }
+          if (res.data.code === 1) {
+            this.$message({
+              message: "删除失败",
+              type: "error",
+            });
+          }
+          if (res.data.code === 5001) {
+            this.$message({
+              message: "参数错误",
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message({
+            message: "删除失败",
+            type: "error",
+          });
+        });
     },
     save(index, row) {
       this.$axios
@@ -135,6 +238,11 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    handleEdit(index, row) {
+      this.editIndex = index;
+      console.log(index);
+      row.edit = true;
     },
   },
   created() {

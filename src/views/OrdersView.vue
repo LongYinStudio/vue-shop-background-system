@@ -138,11 +138,38 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="120">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >查看</el-button
+            <el-popover
+              placement="left"
+              title="详细信息"
+              width="600"
+              trigger="click"
             >
+              <el-row :gutter="20">
+                <el-col :span="6">订单号:{{ scope.row.orderId }}</el-col>
+                <el-col :span="10">下单时间:{{ scope.row.time }}</el-col>
+                <el-col :span="8">手机号:{{ scope.row.phone }}</el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="7">收货人:{{ scope.row.consignee }}</el-col>
+                <el-col :span="5">地址:{{ scope.row.address }}</el-col>
+                <el-col :span="10">送达时间:{{ scope.row.sendTime }}</el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8">用户备注:{{ scope.row.tips }}</el-col>
+                <el-col :span="6">订单金额:{{ scope.row.money }}</el-col>
+                <el-col :span="8">订单状态:{{ scope.row.state }}</el-col>
+              </el-row>
+              <el-button
+                @click="handleClick(scope.row)"
+                type="text"
+                size="small"
+                slot="reference"
+                style="padding-right: 10px"
+                >查看</el-button
+              >
+            </el-popover>
             <el-button
               type="text"
               size="small"
