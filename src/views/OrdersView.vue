@@ -23,8 +23,9 @@
           </el-form-item>
           <el-form-item label="订单状态">
             <el-select v-model="ordersForm.state" placeholder="订单状态">
-              <el-option label="出货中" value="outing"></el-option>
-              <el-option label="派送中" value="sending"></el-option>
+              <el-option label="已受理" value="已受理"></el-option>
+              <el-option label="派送中" value="派送中"></el-option>
+              <el-option label="已完成" value="已完成"></el-option>
             </el-select> </el-form-item
         ></el-row>
         <el-row>
@@ -51,7 +52,7 @@
         </el-table-column>
         <el-table-column prop="consignee" label="收货人" width="120">
         </el-table-column>
-        <el-table-column prop="address" label="地址" width="300">
+        <el-table-column prop="address" label="地址" width="180">
         </el-table-column>
         <el-table-column prop="sendTime" label="送达时间" width="120">
         </el-table-column>
@@ -61,7 +62,6 @@
         </el-table-column>
         <el-table-column prop="state" label="订单状态" width="120">
         </el-table-column>
-        <el-table-column prop="zip" label="邮编" width="120"> </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
@@ -76,7 +76,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         layout="total, prev, pager, next, jumper"
-        :total="orders.length"
+        :total="total"
       >
       </el-pagination>
     </el-card>
@@ -94,327 +94,69 @@ export default {
         state: "",
       },
       value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
-      orders: [
-        {
-          orderId: "151617183232",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵六",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "151617118",
-          time: "19:10:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:02:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:20",
-          phone: "13666888777",
-          consignee: "王五",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "王五",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "12:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵六",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:05:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵六",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "王五",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "王五",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-        {
-          orderId: "15161718",
-          time: "19:00:00",
-          phone: "13666888777",
-          consignee: "赵四",
-          address: "成都市高新区发财路888号",
-          sendTime: "15:10:05",
-          tips: "微辣",
-          money: "108",
-          state: "已受理",
-        },
-      ],
+      orders: [],
       pageSize: 6,
       currentPage: 1,
       tableData: [],
+      total: -1,
     };
   },
   methods: {
     onSubmit() {
-      alert("查询");
+      // alert("查询");
+      this.getClasses();
     },
     handleClick(row) {
       console.log(row);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.tableData = this.orders.slice(
-        this.pageSize * (val - 1),
-        this.pageSize * val
-      );
+      this.getClasses();
+    },
+    getClasses() {
+      let queryParams = "";
+      if (this.ordersForm.orderId)
+        queryParams += "&orderNo=" + this.ordersForm.orderId;
+      if (this.ordersForm.consignee)
+        queryParams += "&consignee=" + this.ordersForm.consignee;
+      if (this.ordersForm.phoneNum)
+        queryParams += "&phone=" + this.ordersForm.phoneNum;
+      if (this.ordersForm.state)
+        queryParams += "&orderState=" + this.ordersForm.state;
+      console.log(queryParams);
+      this.$axios
+        .get(
+          "http://localhost:5000/order/list?currentPage=" +
+            this.currentPage +
+            "&pageSize=" +
+            this.pageSize +
+            queryParams
+        )
+        .then((res) => {
+          this.total = res.data.total;
+          this.tableData = [];
+          res.data.data.forEach((element) => {
+            this.tableData.push({
+              orderId: element.orderNo,
+              time: element.orderTime,
+              phone: element.phone,
+              consignee: element.consignee,
+              address: element.deliverAddress,
+              sendTime: element.deliveryTime,
+              tips: element.remarks,
+              money: element.orderAmount,
+              state: element.orderState,
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   mounted() {
-    this.tableData = this.orders.slice(0, this.pageSize);
+    // this.tableData = this.orders.slice(0, this.pageSize);
+    this.getClasses();
   },
 };
 </script>
