@@ -32,11 +32,12 @@
           <div class="timer">
             <div class="title">时间范围</div>
             <el-date-picker
-              v-model="value1"
+              v-model="ordersForm.date"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              value-format="yyyy-MM-dd hh:mm:ss"
             >
             </el-date-picker>
             <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -208,11 +209,11 @@ export default {
         consignee: "",
         phoneNum: "",
         state: "",
+        date: "",
       },
       editForm: {
         phone: -1,
       },
-      value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
       orders: [],
       pageSize: 6,
       currentPage: 1,
@@ -224,6 +225,7 @@ export default {
   methods: {
     onSubmit() {
       this.getClasses();
+      console.log(this.ordersForm.date);
     },
     handleClick(row) {
       console.log(row);
@@ -242,7 +244,8 @@ export default {
         queryParams += "&phone=" + this.ordersForm.phoneNum;
       if (this.ordersForm.state)
         queryParams += "&orderState=" + this.ordersForm.state;
-      // console.log(queryParams);
+      if (this.ordersForm.date)
+        queryParams += "&date=" + JSON.stringify(this.ordersForm.date);
       this.$axios
         .get(
           "http://localhost:5000/order/list?currentPage=" +
