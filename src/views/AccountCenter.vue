@@ -19,6 +19,7 @@
           管理员头像:&emsp;<el-image
             style="width: 100px; height: 100px"
             :src="info.imgUrl"
+            v-if="info.imgUrl !== undefined"
             fit="full"
             @click="changeAvatar"
           ></el-image>
