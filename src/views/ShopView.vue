@@ -3,13 +3,16 @@
     <el-card class="box-card">
       <div slot="header" class="header">
         <span>店铺管理</span>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="handleModify">{{
+          isDisabled ? "修改" : "保存"
+        }}</el-button>
       </div>
       <el-form
         ref="form"
         :model="form"
         label-position="right"
         label-width="80px"
+        :disabled="isDisabled"
       >
         <el-form-item label="店铺名称">
           <el-col :span="11"> <el-input v-model="form.name"></el-input></el-col>
@@ -80,9 +83,19 @@
           ></el-col>
         </el-form-item>
         <el-form-item label="店铺评分">
-          <el-col :span="11">
-            <el-input v-model="form.score"></el-input
-          ></el-col>
+          <el-col
+            :span="11"
+            style="height: 100%; display: flex; align-items: center"
+          >
+            <!-- <el-input v-model="form.score"></el-input> -->
+            <el-rate
+              v-model="form.score"
+              disabled
+              show-score
+              text-color="#ff9900"
+            >
+            </el-rate>
+          </el-col>
         </el-form-item>
         <el-form-item label="销量">
           <el-col :span="11">
@@ -141,6 +154,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
+      isDisabled: true,
     };
   },
 
@@ -157,6 +171,9 @@ export default {
     },
     handleDownload(file) {
       console.log(file);
+    },
+    handleModify() {
+      this.isDisabled = !this.isDisabled;
     },
   },
   created() {

@@ -57,7 +57,8 @@ export default {
       this.dialogVisible = true;
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(URL.createObjectURL(file.raw));
+      this.imageUrl = res.imgUrl;
     },
     handleSave() {
       this.$axios
