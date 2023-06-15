@@ -93,10 +93,8 @@ export default {
             .catch((err) => {
               console.log(err);
             });
-          this.logining = true;
         } else {
           this.$message.error("请输入用户名密码！");
-          this.logining = false;
           return false;
         }
       });
