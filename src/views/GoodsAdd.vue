@@ -39,41 +39,14 @@
         </el-form-item>
         <el-form-item label="店铺图片" prop="imgs">
           <el-upload
+            class="avatar-uploader"
             action="http://localhost:5000/goods/goods_img_upload"
-            list-type="picture-card"
+            :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{ file }">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="imgUrl"
-                alt=""
-              />
-              <span class="el-upload-list__item-actions">
-                <span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
-                >
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
-                  <i class="el-icon-download"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
+            <img v-if="imgUrl" :src="imgUrl" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="商品描述">
@@ -105,14 +78,15 @@ export default {
       imgUrl: "",
     };
   },
-
   methods: {
-    handleRemove(file) {
-      console.log(file);
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      let index = this.form.pics.indexOf(file.name);
+      this.form.pics.splice(index, 1);
     },
-    handleDownload(file) {
-      console.log(file);
-      console.log(1);
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
     },
     handleAvatarSuccess(res, file) {
       this.imgUrl = URL.createObjectURL(file.raw);
@@ -195,5 +169,28 @@ export default {
       }
     }
   }
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
