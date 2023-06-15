@@ -30,7 +30,6 @@
           type="primary"
           style="width: 100%"
           @click="submitForm('ruleForm')"
-          :loading="logining"
           >登录</el-button
         >
       </el-form-item>
@@ -42,8 +41,6 @@ export default {
   name: "LoginView",
   data() {
     return {
-      //定义loading默认为false
-      logining: false,
       ruleForm: {
         //username和password默认为空
         username: "",
@@ -73,7 +70,6 @@ export default {
                   message: "登录成功",
                   type: "success",
                 });
-                this.logining = false;
                 //把token存入本地存储
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("username", this.ruleForm.username);
