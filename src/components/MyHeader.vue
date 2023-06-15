@@ -86,7 +86,7 @@ export default {
     flex-direction: row;
     align-items: center;
     * {
-      padding: 0px 6px;
+      margin: 0px 6px;
     }
   }
 
