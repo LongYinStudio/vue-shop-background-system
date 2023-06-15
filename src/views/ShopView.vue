@@ -27,52 +27,6 @@
             ></el-input
           ></el-col>
         </el-form-item>
-        <!-- <el-form-item label="店铺头像" prop="avatar">
-          <el-avatar shape="square" :size="148" :src="form.avatar"></el-avatar>
-        </el-form-item>
-        <el-form-item label="店铺图片" prop="imgs">
-          <div shopImg>
-            <el-avatar
-              v-for="item in form.pics"
-              :key="item"
-              shape="square"
-              :size="148"
-              :src="item"
-            ></el-avatar>
-            <el-upload action="#" list-type="picture-card" :auto-upload="false">
-              <i slot="default" class="el-icon-plus"></i>
-              <div slot="file" slot-scope="{ file }">
-                <img
-                  class="el-upload-list__item-thumbnail"
-                  :src="form.imgs"
-                  alt=""
-                />
-                <span class="el-upload-list__item-actions">
-                  <span
-                    class="el-upload-list__item-preview"
-                    @click="handlePictureCardPreview(file)"
-                  >
-                    <i class="el-icon-zoom-in"></i>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleDownload(file)"
-                  >
-                    <i class="el-icon-download"></i>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                  >
-                    <i class="el-icon-delete"></i>
-                  </span>
-                </span>
-              </div>
-            </el-upload>
-          </div>
-        </el-form-item> -->
         <el-form-item label="店铺头像">
           <el-upload
             class="avatar-uploader"
@@ -119,7 +73,6 @@
             :span="11"
             style="height: 100%; display: flex; align-items: center"
           >
-            <!-- <el-input v-model="form.score"></el-input> -->
             <el-rate v-model="form.score" text-color="#ff9900"> </el-rate>
           </el-col>
         </el-form-item>
@@ -163,7 +116,6 @@
 </template>
 
 <script>
-// import _ from "lodash";
 export default {
   name: "ShopView",
   data() {
@@ -218,44 +170,12 @@ export default {
     },
     //店铺图片上传成功
     handleShopSuccess(res) {
-      console.log("店铺图片上传成功", res);
       if (res.code === 0) {
         this.$message.success(res.msg);
         this.form.pics.push(res.imgUrl);
       }
     },
     handleSave() {
-      // const pidZero = (n) => {
-      //   return n < 10 ? "0" + n : n;
-      // };
-      // const formatTime = (date) => {
-      //   let now = new Date(date);
-      //   let h = now.getHours();
-      //   h = pidZero(h);
-      //   let minutes = now.getMinutes();
-      //   minutes = pidZero(minutes);
-      //   let s = now.getSeconds();
-      //   s = pidZero(s);
-      //   return [h, minutes, s].join(":");
-      // };
-      // this.isDisabled = !this.isDisabled;
-      // if (this.isDisabled) {
-      //   console.log("发请求，保存数据...");
-      //   console.log("1", this.form);
-      //   //深拷贝对象
-      //   let sendForm = _.cloneDeep(this.form);
-      //   //  处理日期格式为  时：分：秒
-      //   sendForm.scaleTime = sendForm.scaleTime.map((v) => {
-      //     console.log(v);
-      //     return formatTime(v);
-      //   });
-      //   // console.log("2", this.shopForm.date);
-      //   //  发请求，保存数据
-      //   // shopEdit(sendForm);
-      //   console.log("sendForm", sendForm);
-      // }
-      // console.log(this.form.activity);
-      console.log(this.form.scaleTime);
       this.$axios
         .post("http://localhost:5000/shop/edit", {
           id: 1,
