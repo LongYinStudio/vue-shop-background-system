@@ -229,6 +229,7 @@ export default {
           pics: res.data.data.pics,
           postageFee: res.data.data.deliveryPrice,
           postageDesc: res.data.data.description,
+          postageTime: res.data.data.deliveryTime,
           score: res.data.data.score,
           salesVolume: res.data.data.sellCount,
           activity: res.data.data.supports,
